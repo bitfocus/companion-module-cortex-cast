@@ -1,15 +1,30 @@
 import type ModuleInstance from './main.js'
 
+/**
+ * Fixed variables plus three per hotkey, generated from Cast's hotkey list:
+ *   <ID>_name, <ID>_item, <ID>_state   (e.g. H1_name)
+ */
 export type VariablesSchema = {
-	variable1: string
-	variable2: string
-	variable3: string
+	hotkey_count?: number
+	playing_hotkeys?: string
+	last_hotkey_id?: string
+	last_hotkey_name?: string
+	last_action?: string
+	[perHotkey: string]: string | number | undefined
 }
 
 export function UpdateVariableDefinitions(self: ModuleInstance): void {
-	self.setVariableDefinitions({
-		variable1: { name: 'My first variable' },
-		variable2: { name: 'My second variable' },
-		variable3: { name: 'Another variable' },
-	})
+	const defs: Record<string, { name: string }> = {
+		hotkey_count: { name: 'Number of hotkeys in Cast' },
+		playing_hotkeys: { name: 'Hotkeys currently playing (comma separated)' },
+		last_hotkey_id: { name: 'Last triggered hotkey ID' },
+		last_hotkey_name: { name: 'Last triggered hotkey name' },
+		last_action: { name: 'Last action reported by Cast (e.g. stopped)' },
+	}
+	for (const h of self.hotkeys) {
+		defs[`${h.id}_name`] = { name: `${h.id} name` }
+		defs[`${h.id}_item`] = { name: `${h.id} assigned item` }
+		defs[`${h.id}_state`] = { name: `${h.id} state (playing / stopped / unknown)` }
+	}
+	self.setVariableDefinitions(defs)
 }
