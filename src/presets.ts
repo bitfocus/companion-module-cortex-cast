@@ -15,9 +15,10 @@ export function UpdatePresets(self: ModuleInstance): void {
 		hotkeyPresetIds.push(presetId)
 		presets[presetId] = {
 			type: 'simple',
-			name: `${h.id}: ${h.name}`,
+			name: `${h.id}: ${self.buttonLabel(h).replace(/\n/g, ' / ')}`,
 			style: {
-				text: `${h.id}\n${h.name}`,
+				// Live text: follows renames/rebinds in Cast without re-dragging the preset
+				text: `${h.id}\n$(${self.label}:${h.id}_label)`,
 				size: 'auto',
 				show_topbar: false,
 				...(h.attachedItem ? IDLE : EMPTY),
@@ -56,7 +57,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 					id: 'hotkeys',
 					name: 'Hotkeys from Cast',
 					description: hotkeyPresetIds.length
-						? 'One button per hotkey. Turns red while playing.'
+						? 'One button per hotkey, labelled from Cast. Turns red while playing.'
 						: 'No hotkeys yet - connect to Cast, or press Refresh hotkeys.',
 					type: 'simple',
 					presets: hotkeyPresetIds,

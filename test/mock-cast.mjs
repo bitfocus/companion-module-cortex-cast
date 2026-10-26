@@ -4,7 +4,7 @@ import http from 'node:http'
 
 const hotkeys = [
 	{ id: 'H1', name: 'Cortex Ads', attachedItem: { type: 'broadcast', name: 'Media: Cortex Adverts' } },
-	{ id: 'H2', name: 'Goal!', attachedItem: { type: 'broadcast', name: 'Media: Goal Celebration' } },
+	{ id: 'H2', name: 'Goal!', attachedItem: { type: 'broadcast', name: 'Media: Goal_Celebration.mp4' } },
 	{ id: 'H3', name: 'Nothing assigned', attachedItem: null },
 	{ id: 'H10', name: 'Half Time', attachedItem: { type: 'playlist', name: 'Half Time Loop' } },
 ]

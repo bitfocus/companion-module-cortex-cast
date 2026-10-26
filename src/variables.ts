@@ -1,8 +1,8 @@
 import type ModuleInstance from './main.js'
 
 /**
- * Fixed variables plus three per hotkey, generated from Cast's hotkey list:
- *   <ID>_name, <ID>_item, <ID>_state   (e.g. H1_name)
+ * Fixed variables plus four per hotkey, generated from Cast's hotkey list:
+ *   <ID>_name, <ID>_item, <ID>_label, <ID>_state   (e.g. H1_name)
  */
 export type VariablesSchema = {
 	hotkey_count?: number
@@ -24,6 +24,7 @@ export function UpdateVariableDefinitions(self: ModuleInstance): void {
 	for (const h of self.hotkeys) {
 		defs[`${h.id}_name`] = { name: `${h.id} name` }
 		defs[`${h.id}_item`] = { name: `${h.id} assigned item` }
+		defs[`${h.id}_label`] = { name: `${h.id} button text` }
 		defs[`${h.id}_state`] = { name: `${h.id} state (playing / stopped / unknown)` }
 	}
 	self.setVariableDefinitions(defs)

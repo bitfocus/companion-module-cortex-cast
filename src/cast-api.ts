@@ -130,3 +130,15 @@ export function normaliseHotkeyId(input: unknown): string {
 function asText(v: unknown): string {
 	return typeof v === 'string' || typeof v === 'number' ? String(v) : ''
 }
+
+const MEDIA_EXTENSIONS = /\.(mp4|mov|m4v|avi|mkv|wmv|webm|mxf|mpg|mpeg|png|jpe?g|gif|bmp|tiff?|webp|svg|wav|mp3|aac)$/i
+
+/** Turn Cast's item name ("Media: Goal_Celebration.mp4") into a button-friendly label ("Goal Celebration") */
+export function cleanItemName(name: string): string {
+	return name
+		.replace(/^\s*(media|broadcast|template|playlist|plugin)\s*:\s*/i, '')
+		.replace(MEDIA_EXTENSIONS, '')
+		.replace(/_/g, ' ')
+		.replace(/\s+/g, ' ')
+		.trim()
+}

@@ -7,7 +7,11 @@ export type ModuleConfig = {
 	port: number
 	pollInterval: number
 	timeout: number
+	buttonText: ButtonTextMode
 }
+
+export type ButtonTextMode = 'item' | 'hotkey' | 'both'
+export const DEFAULT_BUTTON_TEXT: ButtonTextMode = 'item'
 
 export function GetConfigFields(): SomeCompanionConfigField[] {
 	return [
@@ -56,6 +60,19 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			min: 250,
 			max: 30000,
 			default: 3000,
+		},
+		{
+			type: 'dropdown',
+			id: 'buttonText',
+			label: 'Hotkey button text',
+			tooltip: 'What preset buttons show. Updates live when you change hotkeys in Cast.',
+			width: 6,
+			default: DEFAULT_BUTTON_TEXT,
+			choices: [
+				{ id: 'item', label: 'Assigned content name (e.g. Cortex Adverts)' },
+				{ id: 'hotkey', label: 'Hotkey name from Cast' },
+				{ id: 'both', label: 'Hotkey name + content name' },
+			],
 		},
 	]
 }

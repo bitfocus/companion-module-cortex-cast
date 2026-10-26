@@ -5,13 +5,13 @@ import {
 	type CompanionHTTPResponse,
 	type SomeCompanionConfigField,
 } from '@companion-module/base'
-import { DEFAULT_PORT, GetConfigFields, type ModuleConfig } from './config.js'
+import { DEFAULT_BUTTON_TEXT, DEFAULT_PORT, GetConfigFields, type ModuleConfig } from './config.js'
 import { UpdateVariableDefinitions, type VariablesSchema } from './variables.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions, type ActionsSchema } from './actions.js'
 import { UpdateFeedbacks, type FeedbacksSchema } from './feedbacks.js'
 import { UpdatePresets } from './presets.js'
-import { CastClient, compareHotkeyIds, normaliseHotkeyId, type CastHotkey } from './cast-api.js'
+import { CastClient, cleanItemName, compareHotkeyIds, normaliseHotkeyId, type CastHotkey } from './cast-api.js'
 
 export type ModuleSchema = {
 	config: ModuleConfig
@@ -58,6 +58,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	async configUpdated(config: ModuleConfig): Promise<void> {
 		this.config = config
 		this.#stopPolling()
+		this.updateVariableValues() // button text setting may have changed
 		this.#lastError = ''
 
 		const host = (config.host ?? '').trim()
@@ -142,6 +143,20 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 
 	// ---------------------------------------------------------------- state
 
+	/** Text shown on a hotkey's preset button, per the "Hotkey button text" setting */
+	buttonLabel(h: CastHotkey): string {
+		const item = h.attachedItem ? cleanItemName(h.attachedItem.name) : ''
+		switch (this.config?.buttonText ?? DEFAULT_BUTTON_TEXT) {
+			case 'hotkey':
+				return h.name
+			case 'both':
+				return item && item !== h.name ? `${h.name}\n${item}` : h.name
+			case 'item':
+			default:
+				return item || h.name
+		}
+	}
+
 	findHotkey(id: string): CastHotkey | undefined {
 		return this.hotkeys.find((h) => h.id === id)
 	}
@@ -172,6 +187,7 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 		for (const h of this.hotkeys) {
 			values[`${h.id}_name`] = h.name
 			values[`${h.id}_item`] = h.attachedItem?.name ?? ''
+			values[`${h.id}_label`] = this.buttonLabel(h)
 			values[`${h.id}_state`] = this.getHotkeyState(h.id)
 		}
 		this.setVariableValues(values)

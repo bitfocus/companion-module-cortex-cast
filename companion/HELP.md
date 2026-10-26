@@ -10,12 +10,13 @@ Controls [Cortex Cast](https://cortextech.io/solutions/playout-software/cast-pla
 
 ### Configuration
 
-| Field               | Description                                                                       |
-| ------------------- | --------------------------------------------------------------------------------- |
-| Cast PC IP address  | IP of the machine running Cast                                                    |
-| Port                | Network Hotkeys port. Cast uses **9250**                                          |
-| Refresh hotkey list | How often to re-read hotkey names from Cast and check it's online. 0 turns it off |
-| Request timeout     | How long to wait for Cast to answer                                               |
+| Field               | Description                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| Cast PC IP address  | IP of the machine running Cast                                                              |
+| Port                | Network Hotkeys port. Cast uses **9250**                                                    |
+| Refresh hotkey list | How often to re-read hotkey names from Cast and check it's online. 0 turns it off           |
+| Request timeout     | How long to wait for Cast to answer                                                         |
+| Hotkey button text  | What hotkey buttons show: the **assigned content name** (default), the hotkey name, or both |
 
 When connected, the module reads every hotkey from Cast. Dropdowns, presets and variables are built from that list and update automatically when you add or rename hotkeys in Cast.
 
@@ -46,20 +47,23 @@ Replace `<companion-ip>` with the Companion machine's IP, `8000` with Companion'
 
 ### Variables
 
-| Variable           | Description                              |
-| ------------------ | ---------------------------------------- |
-| `hotkey_count`     | Number of hotkeys in Cast                |
-| `playing_hotkeys`  | Hotkeys currently playing, e.g. `H1, H4` |
-| `last_hotkey_id`   | Last hotkey triggered from Companion     |
-| `last_hotkey_name` | Its name                                 |
-| `last_action`      | Action Cast reported for that press      |
-| `H1_name`          | Name of hotkey H1 (one set per hotkey)   |
-| `H1_item`          | Item bound to H1                         |
-| `H1_state`         | `playing`, `stopped` or `unknown`        |
+| Variable           | Description                                             |
+| ------------------ | ------------------------------------------------------- |
+| `hotkey_count`     | Number of hotkeys in Cast                               |
+| `playing_hotkeys`  | Hotkeys currently playing, e.g. `H1, H4`                |
+| `last_hotkey_id`   | Last hotkey triggered from Companion                    |
+| `last_hotkey_name` | Its name                                                |
+| `last_action`      | Action Cast reported for that press                     |
+| `H1_name`          | Name of hotkey H1 (one set per hotkey)                  |
+| `H1_item`          | Item bound to H1                                        |
+| `H1_label`         | Text shown on H1's button (per the button text setting) |
+| `H1_state`         | `playing`, `stopped` or `unknown`                       |
 
 ### Presets
 
-One button per hotkey (name from Cast, red while playing, grey if nothing is bound), plus **Stop all** and **Refresh hotkeys**.
+The module builds one button per hotkey from Cast's hotkey list (red while playing, grey if nothing is bound), plus **Stop all** and **Refresh hotkeys**. Find them under **Presets → Cortex: Cast** and drag them onto your pages. Companion doesn't let modules place buttons on pages themselves.
+
+By default each button shows the name of the content bound to the hotkey, tidied up: `Media: Goal_Celebration.mp4` becomes **Goal Celebration**. Change this with **Hotkey button text** in the connection settings. Button text is live, so when you rebind or rename content in Cast, buttons you've already placed update within the refresh interval.
 
 ### Troubleshooting
 
