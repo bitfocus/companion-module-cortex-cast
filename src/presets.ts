@@ -15,7 +15,7 @@ export function UpdatePresets(self: ModuleInstance): void {
 		hotkeyPresetIds.push(presetId)
 		presets[presetId] = {
 			type: 'simple',
-			name: `${h.id}: ${self.buttonLabel(h).replace(/\n/g, ' / ')}`,
+			name: self.buttonLabel(h).replace(/\n/g, ' / '),
 			style: {
 				// Live text: follows renames/rebinds in Cast without re-dragging the preset
 				text: `${h.id}\n$(${self.label}:${h.id}_label)`,
