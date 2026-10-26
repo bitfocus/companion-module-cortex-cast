@@ -14,11 +14,15 @@ yarn lint
 yarn package  # build a .tgz to load into Companion
 ```
 
-To test without Cast, run the mock server and point the module at `127.0.0.1:9250`:
+To test without Cast, run the fake Cast server (needs Node.js 22+) and point the module at it:
 
 ```sh
-node test/mock-cast.mjs
+node test/mock-cast.mjs                       # same PC as Companion -> Cast IP 127.0.0.1
+node test/mock-cast.mjs --lan                 # different PC -> use the IP it prints
+node test/mock-cast.mjs --webhooks http://127.0.0.1:8000/instance/cortex-cast   # also send webhooks
 ```
+
+It logs every request, and you can type a hotkey ID (e.g. `H2`) and press Enter to toggle it as if pressed on the Cast PC.
 
 ### Cast protocol (from the Cast documentation, chapter 30 "Network Hotkeys")
 
